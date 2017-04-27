@@ -42,12 +42,13 @@ foreach(var value in level3.ClusterStream)
 }
 ```
 
-You will obtain the assignments of data points to the clusters, which were called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
+You will obtain the assignments for each data point to the clusters, which were called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
 
 Use `LeafNode` for the 1st level nodes, and `InternalNode` for the 2nd or higher level nodes.
 
 Note: `LeafNode` can only take `IEnumerable<int>` as its argument.
 This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input.
+If you want to deal with more complex data, you must discretize your data and feed the indices to `LeafNode`.
 
 
 
