@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using HtmZetaOne;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,20 +16,19 @@ namespace HtmZetaOneTests
         {
             _node = new LeafNode(new[] {3, 4, 5, 4, 3, 4, 5, 8, 0, 0}, null, 2);
             _node.Learn();
-            // Expected cluster: 0  0  0  0  0  0  0  0  0  0  1  1  1  0
-            var stream1 = new[] {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 0};
-            //                   0  0  0  0  1  1  1  1  1  1  0  0  0  0
-            var stream2 = new[] {0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 0, 1, 0, 0};
-            //                   0  0  0  0  0  1  0  1  0  1  1  1  1  0
-            var stream3 = new[] {0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0};
-            //                   0  0  0  0  1  2  1  2  1  2  3  3  3  0,
-            //                   where 0:000, 1:010, 2:011, 3:101
-            _tree = new InternalNode(new[]
-            {
-                new LeafNode(stream1, stream1, 2),
-                new LeafNode(stream2, stream2, 2),
-                new LeafNode(stream3, stream3, 2),
-            }, 2);
+
+            var streams = new List<int[]>();
+            //                 Expected cluster
+            //                 0  0  0  0  0  0  0  0  0  0  1  1  1  0
+            streams.Add(new[] {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 0});
+            //                 0  0  0  0  1  1  1  1  1  1  0  0  0  0
+            streams.Add(new[] {0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 0, 1, 0, 0});
+            //                 0  0  0  0  0  1  0  1  0  1  1  1  1  0
+            streams.Add(new[] {0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0});
+            var level1 = streams.Select(stream => new LeafNode(stream, stream, 2));
+            _tree = new InternalNode(level1, 2);
+            //                 0  0  0  0  1  2  1  2  1  2  3  3  3  0,
+            //                 where 0:000, 1:010, 2:011, 3:101
             _tree.Learn();
         }
 
