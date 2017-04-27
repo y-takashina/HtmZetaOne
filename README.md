@@ -22,7 +22,7 @@ An implementation of Hierarchical Temporal Memory (HTM/Zeta1).
 Just open the solution file, then build.
 
 ## How to use
-Here is an example to build an HTM/Zeta1 network in HtmZetaOne.
+Here is an example to build an HTM/Zeta1 network in HtmZetaOne. Use `LeafNode` for the 1st level nodes, and `InternalNode` for the 2nd or higher level nodes.
 
 ```csharp
 var streams = new List<int[]>();
@@ -42,9 +42,7 @@ foreach(var value in level3.ClusterStream)
 }
 ```
 
-You will obtain the assignments for each data point to the clusters, which were called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
-
-Use `LeafNode` for the 1st level nodes, and `InternalNode` for the 2nd or higher level nodes.
+`InternalNode.Learn()` method will call its children's `Learn()` method recursively. After learning, you will obtain the assignments for each data point to the clusters, which were called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
 
 Note: `LeafNode` can only take `IEnumerable<int>` as its argument.
 This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input.
