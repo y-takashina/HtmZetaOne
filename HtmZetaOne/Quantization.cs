@@ -5,7 +5,7 @@ using Accord.Statistics;
 
 namespace HtmZetaOne
 {
-    public static class Sampling
+    public static class Quantization
     {
         public static double[] QuantizeAtRegularIntervals(IEnumerable<double> data, int n, bool leaveOutlier = true)
         {
