@@ -31,7 +31,7 @@ namespace HtmZetaOne
             var coincidence = new double[_means.Count];
             if (double.IsNaN(value))
             {
-                coincidence = Enumerable.Repeat(1.0 / _means.Count, _means.Count).ToArray();
+                coincidence = Enumerable.Repeat(1.0 / N, N).ToArray();
             }
             else
             {
