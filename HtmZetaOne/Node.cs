@@ -136,6 +136,7 @@ namespace HtmZetaOne
         /// </summary>
         public int Forward(int input)
         {
+            if (Membership == null) throw new NullReferenceException("Membership is null. Learning has not been completed properly.");
             for (var i = 0; i < M; i++) if (Membership[input, i] == 1) return i;
             throw new ArgumentOutOfRangeException();
         }
