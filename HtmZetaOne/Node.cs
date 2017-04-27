@@ -7,6 +7,11 @@ using Accord.Math;
 
 namespace HtmZetaOne
 {
+    /// <summary>
+    /// Level 1 node in HTM. Only available with discrete values.
+    /// If you want to deal with more complex data (e.g. images),
+    /// you must discretize your data and feed its indices to the LeafNode.
+    /// </summary>
     public sealed class LeafNode : Node
     {
         private IEnumerable<int> _testStream;
@@ -37,6 +42,10 @@ namespace HtmZetaOne
         }
     }
 
+    /// <summary>
+    /// Level 1 node in HTM. Available with continuous values.
+    /// Only single dimension is allowd.
+    /// </summary>
     public sealed class LeafNodeForContinuous : Node
     {
         private readonly double _deviation;
@@ -77,6 +86,9 @@ namespace HtmZetaOne
         }
     }
 
+    /// <summary>
+    /// Level 2 or higher node in HTM.
+    /// </summary>
     public class InternalNode : Node
     {
         private readonly IEnumerable<Node> _childNodes;
