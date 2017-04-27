@@ -46,7 +46,7 @@ foreach(var value in level3.ClusterStream)
 
 Note: `LeafNode` can only take `IEnumerable<int>` as its argument.
 This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input.
-If you want to deal with more complex data (e.g. images), you must discretize your data and feed the indices to `LeafNode`.
+If you want to deal with more complex data (e.g. images), you must discretize your data and feed the gained indices to `LeafNode`.
 
 
 
