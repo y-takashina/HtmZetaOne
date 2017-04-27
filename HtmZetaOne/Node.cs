@@ -9,41 +9,36 @@ namespace HtmZetaOne
 {
     public class LeafNode : Node
     {
-        public List<double> Means { get; private set; }
-        public override int N => Means?.Count ?? 0;
-        public double Deviation { get; }
-        public IEnumerable<double> TestStream { get; private set; }
-        public override bool CanPredict => TestStream?.Any() ?? false;
+        private readonly double _deviation;
+        private readonly List<double> _means;
+        private IEnumerable<double> _testStream;
+        public override int N => _means?.Count ?? 0;
+        public override bool CanPredict => _testStream?.Any() ?? false;
 
         public LeafNode(IEnumerable<double> trainStream, IEnumerable<double> testStream, int numberSpatialPattern, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
         {
-            Memorize(trainStream, numberSpatialPattern);
-            Deviation = trainStream.Where(v => !double.IsNaN(v)).ToArray().Variance();
-            TestStream = testStream;
-        }
-
-        public void Memorize(IEnumerable<double> rawStream, int numberSpatialPattern)
-        {
-            Means = Sampling.KMeansSampling(rawStream.Where(v => !double.IsNaN(v)).ToArray(), numberSpatialPattern).ToList();
-            Stream = rawStream.Select(v => double.IsNaN(v) ? new Random().Next(N) : Means.IndexOf(Means.MinBy(m => Math.Abs(m - v))));
+            _deviation = trainStream.Where(v => !double.IsNaN(v)).ToArray().Variance();
+            _means = Sampling.KMeansSampling(trainStream.Where(v => !double.IsNaN(v)).ToArray(), numberSpatialPattern).ToList();
+            Stream = trainStream.Select(v => double.IsNaN(v) ? new Random().Next(N) : _means.IndexOf(_means.MinBy(m => Math.Abs(m - v))));
+            _testStream = testStream;
         }
 
         public override double[] Predict()
         {
-            if (!CanPredict) throw new NullReferenceException("Cannot predict anything. TestStream is null or empty.");
-            var value = TestStream.First();
-            TestStream = TestStream.Skip(1);
-            var coincidence = new double[Means.Count];
+            if (!CanPredict) throw new NullReferenceException("Cannot predict anything. _testStream is null or empty.");
+            var value = _testStream.First();
+            _testStream = _testStream.Skip(1);
+            var coincidence = new double[_means.Count];
             if (double.IsNaN(value))
             {
-                coincidence = Enumerable.Repeat(1.0 / Means.Count, Means.Count).ToArray();
+                coincidence = Enumerable.Repeat(1.0 / _means.Count, _means.Count).ToArray();
             }
             else
             {
-                for (var i = 0; i < Means.Count; i++)
+                for (var i = 0; i < _means.Count; i++)
                 {
-                    var d = Means[i] - value;
-                    coincidence[i] = Math.Exp(-d * d / Deviation);
+                    var d = _means[i] - value;
+                    coincidence[i] = Math.Exp(-d * d / _deviation);
                 }
             }
             return Forward(coincidence);
