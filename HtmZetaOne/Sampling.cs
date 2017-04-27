@@ -10,7 +10,7 @@ namespace HtmZetaOne
         public static double[] CalcSamplePoints(IEnumerable<double> data, int n)
         {
             var array = data.Where(v => !double.IsNaN(v)).ToArray();
-            var average = array.Average();
+            var average = array.Mean();
             var stddev = array.StandardDeviation();
             var min = average - 3 * stddev;
             var max = average + 3 * stddev;
