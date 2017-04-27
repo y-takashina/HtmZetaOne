@@ -18,7 +18,7 @@ namespace HtmZetaOne
         public LeafNode(IEnumerable<double> trainStream, IEnumerable<double> testStream, int numberSpatialPattern, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
         {
             _deviation = trainStream.Where(v => !double.IsNaN(v)).ToArray().Variance();
-            _means = Sampling.KMeansSampling(trainStream.Where(v => !double.IsNaN(v)).ToArray(), numberSpatialPattern).ToList();
+            _means = Sampling.QuantizeByKMeans(trainStream.Where(v => !double.IsNaN(v)).ToArray(), numberSpatialPattern).ToList();
             Stream = trainStream.Select(v => double.IsNaN(v) ? new Random().Next(N) : _means.IndexOf(_means.MinBy(m => Math.Abs(m - v))));
             _testStream = testStream;
         }

@@ -36,7 +36,7 @@ namespace HtmZetaOne
 
         public static IEnumerable<int> Discretize(this IEnumerable<double> rawStream, int k)
         {
-            var discretizedValues = Sampling.KMeansSampling(rawStream, k).ToList();
+            var discretizedValues = Sampling.QuantizeByKMeans(rawStream, k).ToList();
             var discretizedSeries = new List<int>();
             foreach (var value in rawStream)
             {
@@ -51,7 +51,6 @@ namespace HtmZetaOne
         {
             return probabilities.Where(p => Math.Abs(p) > 1e-300).Sum(p => -p * Math.Log(p, 2));
         }
-
 
         public static double Entropy<T>(this IEnumerable<T> stream)
         {
