@@ -31,17 +31,16 @@ namespace HtmZetaOneTests
                 }
             }
 
-            /*
             var level1 = rawStreams.Select(stream => new LeafNode(stream, stream, NumberSpatialPattern, NumberTemporalGroup));
-            var level2 = Enumerable.Range(0, 6).Select(i => new InternalNode(level1.Where((v, j) => j % 6 == i).ToArray(), NumberTemporalGroup));
-            _root = new InternalNode(level2.ToArray(), NumberTemporalGroup, Metrics.Shortest);
+            var level2 = Enumerable.Range(0, 6).Select(i => new InternalNode(level1.Where((v, j) => j % 6 == i), NumberTemporalGroup));
+            _root = new InternalNode(level2, NumberTemporalGroup, Metrics.Shortest);
             _root.Learn();
-            //*/
         }
 
         [TestMethod()]
         public void AnomalyDetectionTest()
         {
+            var anomalies = new[] {10, 11, 12, 78, 148, 186, 209, 292, 395, 398, 401, 441, 442, 443};
             var streamsByCluster = Enumerable.Range(0, NumberTemporalGroup)
                 .Select(k => _root.ClusterStream
                     .Select((c, i) => (c, i))
@@ -50,27 +49,10 @@ namespace HtmZetaOneTests
                 .OrderByDescending(stream => stream.Count());
             for (var i = 0; i < NumberTemporalGroup + 1; i++)
             {
-                var pr = CalcPr(streamsByCluster.Skip(i));
-                var f = 2 * pr.Item1 * pr.Item2 / (pr.Item1 + pr.Item2);
-                Console.WriteLine($"Precision: {pr.Item1,-6:f4}, Recall: {pr.Item2,-6:f4}, FMeasure: {f}");
+                var (precision, recall) = Utils.CalcPrecisionRecall(streamsByCluster.Skip(i).SelectMany(v => v), anomalies);
+                var f = Utils.HarmonicMean(precision, recall);
+                Console.WriteLine($"Precision: {precision,-6:f4}, Recall: {recall,-6:f4}, FMeasure: {f}");
             }
-        }
-
-        (Cluster<int> cluster, Node node) AggregateClusters(Cluster<int> cluster, LeafNode[] leafNodes, int nTemporalGroup)
-        {
-            if (cluster is Single<int> single) return (null, leafNodes[single.Value]);
-            var couple = (Couple<int>) cluster;
-            var left = AggregateClusters(couple.Left, leafNodes, nTemporalGroup).node;
-            var right = AggregateClusters(couple.Right, leafNodes, nTemporalGroup).node;
-            return (null, new InternalNode(new[] {left, right}, nTemporalGroup, Metrics.GroupAverage));
-        }
-
-        (double, double) CalcPr(IEnumerable<IEnumerable<int>> streams)
-        {
-            var stream = streams.SelectMany(v => v);
-            var anomalies = new[] {10, 11, 12, 78, 148, 186, 209, 292, 395, 398, 401, 441, 442, 443};
-            var nTp = stream.Intersect(anomalies).Count();
-            return ((double) nTp / stream.Count(), (double) nTp / anomalies.Length);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace HtmZetaOne
         {
             if (childNodes == null) throw new NullReferenceException("`childNodes` is null.");
             if (childNodes.Contains(null)) throw new NullReferenceException("`childNodes` contains null.");
-            _childNodes = childNodes;
+            _childNodes = childNodes.ToArray();
         }
 
         private IEnumerable<int[]> _aggregateChildStreams()

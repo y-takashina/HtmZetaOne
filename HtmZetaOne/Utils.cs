@@ -33,5 +33,18 @@ namespace HtmZetaOne
             }
             return b;
         }
+
+        public static (double precision, double recall) CalcPrecisionRecall(IEnumerable<int> predicted, IEnumerable<int> actual)
+        {
+            var nTruePositives = predicted.Intersect(actual).Count();
+            var nPredictedPositives = predicted.Count();
+            var nActualPositives = actual.Count();
+            return ((double) nTruePositives / nPredictedPositives, (double) nTruePositives / nActualPositives);
+        }
+
+        public static double HarmonicMean(double v1, double v2)
+        {
+            return 2 * v1 * v2 / (v1 + v2);
+        }
     }
 }
