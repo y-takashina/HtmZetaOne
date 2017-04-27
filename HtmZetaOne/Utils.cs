@@ -36,7 +36,7 @@ namespace HtmZetaOne
 
         public static IEnumerable<int> Discretize(this IEnumerable<double> rawStream, int k)
         {
-            var discretizedValues = Sampling.KMeansSampling(rawStream, k).ToList();
+            var discretizedValues = Sampling.QuantizeByKMeans(rawStream, k).ToList();
             var discretizedSeries = new List<int>();
             foreach (var value in rawStream)
             {
