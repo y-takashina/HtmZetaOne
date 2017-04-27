@@ -86,6 +86,9 @@ namespace HtmZetaOne
         }
     }
 
+    /// <summary>
+    /// Level 2 or higher node in HTM.
+    /// </summary>
     public class InternalNode : Node
     {
         private readonly IEnumerable<Node> _childNodes;
