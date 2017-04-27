@@ -22,7 +22,7 @@ An implementation of Hierarchical Temporal Memory (HTM/Zeta1).
 Just open the solution file, then build.
 
 ## How to use
-Here is the simplest example to build an HTM/Zeta1 network in HtmZetaOne.
+Here is an example to build an HTM/Zeta1 network in HtmZetaOne.
 
 ```csharp
 var streams = new List<int[]>();
