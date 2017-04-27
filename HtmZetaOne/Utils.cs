@@ -14,7 +14,7 @@ namespace HtmZetaOne
             return -1;
         }
 
-        public static double[,] NormalizeToRaws(this double[,] a, double tolerance = 1e-6)
+        public static double[,] NormalizeToRaws(this double[,] a, double tolerance = double.Epsilon)
         {
             var raws = a.GetLength(0);
             var cols = a.GetLength(1);

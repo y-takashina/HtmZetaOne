@@ -11,11 +11,11 @@ namespace HtmZetaOneTests
     [TestClass()]
     public class AnomalyDetectionTests
     {
-        private readonly Node _root;
         private const int NumberSpatialPattern = 16;
         private const int NumberTemporalGroup = 8;
 
-        public AnomalyDetectionTests()
+        [TestMethod()]
+        public void AnomalyDetectionTest()
         {
             var rawStreams = new List<List<double>>();
             using (var sr = new StreamReader(@"..\..\data\water-treatment.csv"))
@@ -33,16 +33,12 @@ namespace HtmZetaOneTests
 
             var level1 = rawStreams.Select(stream => new LeafNode(stream, stream, NumberSpatialPattern, NumberTemporalGroup));
             var level2 = Enumerable.Range(0, 6).Select(i => new InternalNode(level1.Where((v, j) => j % 6 == i), NumberTemporalGroup));
-            _root = new InternalNode(level2, NumberTemporalGroup, Metrics.Shortest);
-            _root.Learn();
-        }
+            var level3 = new InternalNode(level2, NumberTemporalGroup, Metrics.Shortest);
+            level3.Learn();
 
-        [TestMethod()]
-        public void AnomalyDetectionTest()
-        {
             var anomalies = new[] {10, 11, 12, 78, 148, 186, 209, 292, 395, 398, 401, 441, 442, 443};
             var streamsByCluster = Enumerable.Range(0, NumberTemporalGroup)
-                .Select(k => _root.ClusterStream
+                .Select(k => level3.ClusterStream
                     .Select((c, i) => (c, i))
                     .Where(t => t.Item1 == k)
                     .Select(t => t.Item2))
