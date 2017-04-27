@@ -31,15 +31,6 @@ namespace HtmZetaOneTests
                 }
             }
 
-            //*
-            var discretizedStreams = rawStreams.Select(stream => stream.Discretize(NumberSpatialPattern)).ToArray();
-            var relationships = Utils.MutualInformation(discretizedStreams);
-            var clusters = Clustering.AggregativeHierarchicalClustering(Enumerable.Range(0, discretizedStreams.Length), (i, j) => relationships[i, j], Metrics.GroupAverage);
-            var level1 = rawStreams.Select(stream => new LeafNode(stream, stream, NumberSpatialPattern, NumberTemporalGroup)).ToArray();
-            _root = AggregateClusters(clusters, level1, NumberTemporalGroup).node;
-            _root.Learn();
-            //*/
-
             /*
             var level1 = rawStreams.Select(stream => new LeafNode(stream, stream, NumberSpatialPattern, NumberTemporalGroup));
             var level2 = Enumerable.Range(0, 6).Select(i => new InternalNode(level1.Where((v, j) => j % 6 == i).ToArray(), NumberTemporalGroup));
