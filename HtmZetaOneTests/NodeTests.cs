@@ -1,7 +1,6 @@
 ﻿using System;
 using HtmZetaOne;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MoreLinq;
 
 namespace HtmZetaOneTests
 {

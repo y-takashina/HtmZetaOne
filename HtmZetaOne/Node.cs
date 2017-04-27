@@ -4,7 +4,6 @@ using System.Linq;
 using MoreLinq;
 using Accord.Statistics;
 using Accord.Math;
-using Accord.Math.Distances;
 
 namespace HtmZetaOne
 {
