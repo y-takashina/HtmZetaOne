@@ -4,22 +4,18 @@ using System.Linq;
 using MoreLinq;
 using Accord.Statistics;
 using Accord.Math;
+using Accord.Math.Distances;
 
 namespace HtmZetaOne
 {
-    public class LeafNode : Node
+    public sealed class LeafNode : Node
     {
-        private readonly double _deviation;
-        private readonly List<double> _means;
-        private IEnumerable<double> _testStream;
-        public override int N => _means?.Count ?? 0;
+        private IEnumerable<int> _testStream;
         public override bool CanPredict => _testStream?.Any() ?? false;
 
-        public LeafNode(IEnumerable<double> trainStream, IEnumerable<double> testStream, int numberSpatialPattern, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
+        public LeafNode(IEnumerable<int> trainStream, IEnumerable<int> testStream, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
         {
-            _deviation = trainStream.Where(v => !double.IsNaN(v)).ToArray().Variance();
-            _means = Quantization.QuantizeByKMeans(trainStream.Where(v => !double.IsNaN(v)).ToArray(), numberSpatialPattern).ToList();
-            Stream = trainStream.Select(v => double.IsNaN(v) ? new Random().Next(N) : _means.IndexOf(_means.MinBy(m => Math.Abs(m - v))));
+            Memorize(trainStream.Select(v => new[] {v}));
             _testStream = testStream;
         }
 
@@ -28,14 +24,51 @@ namespace HtmZetaOne
             if (!CanPredict) throw new NullReferenceException("Cannot predict anything. _testStream is null or empty.");
             var value = _testStream.First();
             _testStream = _testStream.Skip(1);
-            var coincidence = new double[_means.Count];
+            var coincidence = new double[N];
+            if (value == -1)
+            {
+                coincidence = Enumerable.Repeat(1.0 / N, N).ToArray();
+            }
+            else
+            {
+                var index = SpatialPooler.IndexOf<int[]>(new[] {value});
+                coincidence[index] = 1.0;
+            }
+            return Forward(coincidence);
+        }
+    }
+
+    public sealed class LeafNodeForContinuous : Node
+    {
+        private readonly double _deviation;
+        private readonly List<double> _means;
+        private IEnumerable<double> _testStream;
+        public override int N => _means?.Count ?? 0;
+        public override bool CanPredict => _testStream?.Any() ?? false;
+
+        public LeafNodeForContinuous(IEnumerable<double> trainStream, IEnumerable<double> testStream, int numberSpatialPattern, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
+        {
+            // memorize means instead of SpatialPooler
+            _means = Quantization.QuantizeByKMeans(trainStream.Where(v => !double.IsNaN(v)).ToArray(), numberSpatialPattern).ToList();
+            _deviation = trainStream.Where(v => !double.IsNaN(v)).ToArray().Variance();
+            var rand = new Random();
+            Stream = trainStream.Select(v => double.IsNaN(v) ? rand.Next(N) : _means.IndexOf(_means.MinBy(m => Math.Abs(m - v))));
+            _testStream = testStream;
+        }
+
+        public override double[] Predict()
+        {
+            if (!CanPredict) throw new NullReferenceException("Cannot predict anything. _testStream is null or empty.");
+            var value = _testStream.First();
+            _testStream = _testStream.Skip(1);
+            var coincidence = new double[N];
             if (double.IsNaN(value))
             {
                 coincidence = Enumerable.Repeat(1.0 / N, N).ToArray();
             }
             else
             {
-                for (var i = 0; i < _means.Count; i++)
+                for (var i = 0; i < N; i++)
                 {
                     var d = _means[i] - value;
                     coincidence[i] = Math.Exp(-d * d / _deviation);
@@ -48,8 +81,6 @@ namespace HtmZetaOne
     public class InternalNode : Node
     {
         private readonly IEnumerable<Node> _childNodes;
-        public List<int[]> SpatialPooler { get; set; }
-        public override int N => SpatialPooler?.Count ?? 0;
         public override bool CanPredict => _childNodes.Aggregate(true, (can, child) => can && child.CanPredict);
 
         public InternalNode(IEnumerable<Node> childNodes, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
@@ -71,17 +102,6 @@ namespace HtmZetaOne
                 }
             }
             return rawStream.Select(coincidence => coincidence.ToArray());
-        }
-
-        public void Memorize(IEnumerable<int[]> rawStream)
-        {
-            SpatialPooler = new List<int[]>();
-            foreach (var value in rawStream)
-            {
-                var memorized = SpatialPooler.Any(memoizedValue => memoizedValue.SequenceEqual(value));
-                if (!memorized) SpatialPooler.Add(value);
-            }
-            Stream = rawStream.Select(value => SpatialPooler.IndexOf<int[]>(value));
         }
 
         public override void Learn()
@@ -109,11 +129,12 @@ namespace HtmZetaOne
     public abstract class Node
     {
         private readonly Func<(double, int), (double, int), double> _metrics;
+        public List<int[]> SpatialPooler { get; set; }
 
         /// <summary>
         /// number of coincidence
         /// </summary>
-        public abstract int N { get; }
+        public virtual int N => SpatialPooler?.Count ?? 0;
 
         /// <summary>
         /// number of temporal group
@@ -147,8 +168,9 @@ namespace HtmZetaOne
         public double[] Forward(double[] input)
         {
             if (input.Length != N) throw new IndexOutOfRangeException("Feedforward input to a node must have the same length as the node's spatial pooler.");
-            var temporalGroup = Enumerable.Range(0, M).Select(i => input.Select((v, j) => v * Membership[j, i]).Max()).ToArray().Normalize();
-            return temporalGroup;
+            var temporalGroup = Enumerable.Range(0, M).Select(i => input.Select((v, j) => v * Membership[j, i]).Max());
+            var sum = temporalGroup.Sum();
+            return temporalGroup.Select(v => v / sum).ToArray();
         }
 
         public int[] Backward(int input)
@@ -162,6 +184,17 @@ namespace HtmZetaOne
         {
             if (input.Length != M) throw new IndexOutOfRangeException("Feedback input to a node must have the same length as the node's temporal pooler.");
             throw new NotImplementedException();
+        }
+
+        protected virtual void Memorize(IEnumerable<int[]> rawStream)
+        {
+            SpatialPooler = new List<int[]>();
+            foreach (var value in rawStream)
+            {
+                var memorized = SpatialPooler.Any(memoizedValue => memoizedValue.SequenceEqual(value));
+                if (!memorized) SpatialPooler.Add(value);
+            }
+            Stream = rawStream.Select(value => SpatialPooler.IndexOf<int[]>(value));
         }
 
         public virtual void Learn()

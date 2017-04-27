@@ -30,7 +30,7 @@ namespace HtmZetaOneTests
                 }
             }
 
-            var level1 = rawStreams.Select(stream => new LeafNode(stream, stream, NumberSpatialPattern, NumberTemporalGroup));
+            var level1 = rawStreams.Select(stream => new LeafNodeForContinuous(stream, stream, NumberSpatialPattern, NumberTemporalGroup));
             var level2 = Enumerable.Range(0, 6).Select(i => new InternalNode(level1.Where((v, j) => j % 6 == i), NumberTemporalGroup));
             var level3 = new InternalNode(level2, NumberTemporalGroup, Metrics.Shortest);
             level3.Learn();
