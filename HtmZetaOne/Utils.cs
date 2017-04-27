@@ -52,7 +52,6 @@ namespace HtmZetaOne
             return probabilities.Where(p => Math.Abs(p) > 1e-300).Sum(p => -p * Math.Log(p, 2));
         }
 
-
         public static double Entropy<T>(this IEnumerable<T> stream)
         {
             var array = stream.ToArray();
