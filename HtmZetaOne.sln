@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOne", "HtmZetaOne\Ht
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOneTests", "HtmZetaOneTests\HtmZetaOneTests.csproj", "{AA858609-822F-46B6-9E88-DB38C49BA8F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOneDemos", "HtmZetaOneDemos\HtmZetaOneDemos.csproj", "{092FD0D7-9A84-422F-BAAA-F060E1613D2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AA858609-822F-46B6-9E88-DB38C49BA8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA858609-822F-46B6-9E88-DB38C49BA8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA858609-822F-46B6-9E88-DB38C49BA8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
