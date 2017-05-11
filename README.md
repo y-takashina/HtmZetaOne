@@ -42,7 +42,7 @@ foreach(var value in level3.ClusterStream)
 }
 ```
 
-`InternalNode.Learn()` method calls its children's `Learn()` method recursively, so you have to write `Learn()` method only once. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. The cluster is also called *temporal group* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
+`InternalNode.Learn()` method calls its children's `Learn()` method recursively, so you have to write `Learn()` method only once. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. Clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
 
 Note: `LeafNode` can only take `IEnumerable<int>` as its argument.
 This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input.
