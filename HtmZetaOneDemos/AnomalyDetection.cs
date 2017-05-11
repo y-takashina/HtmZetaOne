@@ -6,16 +6,16 @@ using HtmZetaOne;
 
 namespace HtmZetaOneDemos
 {
-    public static class AnomalyDetection
+    class AnomalyDetection
     {
         private const int NumberSpatialPattern = 16;
         private const int NumberTemporalGroup = 8;
 
-        [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
             var rawStreams = new List<List<double>>();
-            using (var sr = new StreamReader(@"..\..\data\water-treatment.csv"))
+            var path = Path.Combine("..", "..", "data", "water-treatment.csv");
+            using (var sr = new StreamReader(path))
             {
                 while (!sr.EndOfStream)
                 {
@@ -47,7 +47,8 @@ namespace HtmZetaOneDemos
                 Console.WriteLine($"Precision: {precision,-6:f4}, Recall: {recall,-6:f4}, FMeasure: {f}");
             }
 
-            Console.ReadLine();
+            Console.WriteLine("Push any key to finish...");
+            Console.ReadKey();
         }
     }
 }

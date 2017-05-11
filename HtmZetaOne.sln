@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOne", "HtmZetaOne\Ht
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOneTests", "HtmZetaOneTests\HtmZetaOneTests.csproj", "{AA858609-822F-46B6-9E88-DB38C49BA8F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOneDemos", "HtmZetaOneDemos\HtmZetaOneDemos.csproj", "{092FD0D7-9A84-422F-BAAA-F060E1613D2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmZetaOneDemos", "HtmZetaOneDemos\HtmZetaOneDemos.csproj", "{C474B210-34A2-4A98-A67A-38218102E347}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{AA858609-822F-46B6-9E88-DB38C49BA8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA858609-822F-46B6-9E88-DB38C49BA8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA858609-822F-46B6-9E88-DB38C49BA8F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{092FD0D7-9A84-422F-BAAA-F060E1613D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C474B210-34A2-4A98-A67A-38218102E347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C474B210-34A2-4A98-A67A-38218102E347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C474B210-34A2-4A98-A67A-38218102E347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C474B210-34A2-4A98-A67A-38218102E347}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
