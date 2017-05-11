@@ -1,23 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HtmZetaOne;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using HtmZetaOne;
 
-namespace HtmZetaOneTests
+namespace HtmZetaOneDemos
 {
-    [TestClass()]
-    public class AnomalyDetectionTests
+    class AnomalyDetection
     {
         private const int NumberSpatialPattern = 16;
         private const int NumberTemporalGroup = 8;
 
-        [TestMethod()]
-        public void AnomalyDetectionTest()
+        public static void Main(string[] args)
         {
             var rawStreams = new List<List<double>>();
-            using (var sr = new StreamReader(@"..\..\data\water-treatment.csv"))
+            var path = Path.Combine("..", "..", "data", "water-treatment.csv");
+            using (var sr = new StreamReader(path))
             {
                 while (!sr.EndOfStream)
                 {
@@ -48,6 +46,9 @@ namespace HtmZetaOneTests
                 var f = Utils.HarmonicMean(precision, recall);
                 Console.WriteLine($"Precision: {precision,-6:f4}, Recall: {recall,-6:f4}, FMeasure: {f}");
             }
+
+            Console.WriteLine("Push any key to finish...");
+            Console.ReadKey();
         }
     }
 }
