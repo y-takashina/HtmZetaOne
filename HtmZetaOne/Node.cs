@@ -42,10 +42,10 @@ namespace HtmZetaOne
             return Forward(coincidence);
         }
 
-        public override void Generate(int temporalGroup)
+        public override void Generate(double[] input)
         {
             if (GeneratedStream == null) GeneratedStream = new List<int>();
-            var possiblePatterns = Backward(temporalGroup);
+            var possiblePatterns = Backward(input);
             var index = possiblePatterns.ArgMax();
             GeneratedStream.Add(SpatialPooler[index].Single());
         }
@@ -94,7 +94,7 @@ namespace HtmZetaOne
             return Forward(coincidence);
         }
 
-        public override void Generate(int temporalGroup) { }
+        public override void Generate(double[] input) { }
     }
 
     /// <summary>
@@ -147,13 +147,24 @@ namespace HtmZetaOne
             return Forward(coincidence);
         }
 
-        public override void Generate(int temporalGroup)
+        public override void Generate(double[] input)
         {
-            var possiblePatterns = Backward(temporalGroup);
-            var index = possiblePatterns.ArgMax();
+            // Spatial Pooler の長さ N だけある
+            var patternPlobabilities = Backward(input);
+            // i 番目の子ノードについて
             for (var i = 0; i < _childNodes.Count; i++)
             {
-                _childNodes[i].Generate(SpatialPooler[index][i]);
+                var temporalGroup = new double[_childNodes[i].M];
+                // j 番目の pattern について
+                for (var j = 0; j < N; j++)
+                {
+                    // i 番目の子ノードの k 番目の temporal group について
+                    for (var k = 0; k < _childNodes[i].M; k++)
+                    {
+                        if (SpatialPooler[j][i] == k) temporalGroup[k] += patternPlobabilities[j];
+                    }
+                }
+                _childNodes[i].Generate(temporalGroup.Normalize());
             }
         }
     }
@@ -253,6 +264,6 @@ namespace HtmZetaOne
         }
 
         public abstract double[] Predict();
-        public abstract void Generate(int temporalGroup);
+        public abstract void Generate(double[] input);
     }
 }
