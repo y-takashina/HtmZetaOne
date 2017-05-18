@@ -15,6 +15,7 @@ namespace HtmZetaOne
     public sealed class LeafNode : Node
     {
         private IEnumerable<int> _testStream;
+        public List<int> GeneratedStream { get; set; }
         public override bool CanPredict => _testStream?.Any() ?? false;
 
         public LeafNode(IEnumerable<int> trainStream, IEnumerable<int> testStream, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
@@ -39,6 +40,14 @@ namespace HtmZetaOne
                 coincidence[index] = 1.0;
             }
             return Forward(coincidence);
+        }
+
+        public override void Generate(int temporalGroup)
+        {
+            if (GeneratedStream == null) GeneratedStream = new List<int>();
+            var possiblePatterns = Backward(temporalGroup);
+            var index = possiblePatterns.ArgMax();
+            GeneratedStream.Add(SpatialPooler[index].Single());
         }
     }
 
@@ -84,6 +93,8 @@ namespace HtmZetaOne
             }
             return Forward(coincidence);
         }
+
+        public override void Generate(int temporalGroup) { }
     }
 
     /// <summary>
@@ -91,14 +102,14 @@ namespace HtmZetaOne
     /// </summary>
     public class InternalNode : Node
     {
-        private readonly IEnumerable<Node> _childNodes;
+        private readonly List<Node> _childNodes;
         public override bool CanPredict => _childNodes.Aggregate(true, (can, child) => can && child.CanPredict);
 
         public InternalNode(IEnumerable<Node> childNodes, int numberTemporalGroup, Func<(double, int), (double, int), double> metrics = null) : base(numberTemporalGroup, metrics)
         {
             if (childNodes == null) throw new NullReferenceException("`childNodes` is null.");
             if (childNodes.Contains(null)) throw new NullReferenceException("`childNodes` contains null.");
-            _childNodes = childNodes.ToArray();
+            _childNodes = childNodes.ToList();
         }
 
         private IEnumerable<int[]> _aggregateChildStreams()
@@ -134,6 +145,16 @@ namespace HtmZetaOne
                 }
             }
             return Forward(coincidence);
+        }
+
+        public override void Generate(int temporalGroup)
+        {
+            var possiblePatterns = Backward(temporalGroup);
+            var index = possiblePatterns.ArgMax();
+            for (var i = 0; i < _childNodes.Count; i++)
+            {
+                _childNodes[i].Generate(SpatialPooler[index][i]);
+            }
         }
     }
 
@@ -180,8 +201,7 @@ namespace HtmZetaOne
         {
             if (input.Length != N) throw new IndexOutOfRangeException("Feedforward input to a node must have the same length as the node's spatial pooler.");
             var temporalGroup = Enumerable.Range(0, M).Select(i => input.Select((v, j) => v * Membership[j, i]).Max());
-            var sum = temporalGroup.Sum();
-            return temporalGroup.Select(v => v / sum).ToArray();
+            return temporalGroup.ToArray().Normalize();
         }
 
         public int[] Backward(int input)
@@ -194,7 +214,8 @@ namespace HtmZetaOne
         public double[] Backward(double[] input)
         {
             if (input.Length != M) throw new IndexOutOfRangeException("Feedback input to a node must have the same length as the node's temporal pooler.");
-            throw new NotImplementedException();
+            var spatialPattern = Enumerable.Range(0, N).Select(i => input.Select((v, j) => v * Membership[i, j]).Max());
+            return spatialPattern.ToArray().Normalize();
         }
 
         protected virtual void Memorize(IEnumerable<int[]> rawStream)
@@ -219,6 +240,7 @@ namespace HtmZetaOne
             var probabilities = transitions.NormalizeToRaws();
             var distances = probabilities.Add(probabilities.Transpose()).Multiply(-1);
             var cluster = Clustering.AggregativeHierarchicalClustering(Enumerable.Range(0, N), (i, j) => distances[i, j], _metrics);
+//            if (M > N) M = N;
             var clusterwiseMembers = cluster.Extract(M).Select(c => c.SelectMany(v => v)).ToArray();
             Membership = new int[N, M];
             for (var i = 0; i < N; i++)
@@ -231,5 +253,6 @@ namespace HtmZetaOne
         }
 
         public abstract double[] Predict();
+        public abstract void Generate(int temporalGroup);
     }
 }
