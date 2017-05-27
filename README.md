@@ -22,7 +22,7 @@ An implementation of Hierarchical Temporal Memory (HTM/Zeta1).
 Just open the solution file, then build.
 
 ## How to use
-Here is an example to build an HTM/Zeta1 network in HtmZetaOne. Use `LeafNode` for the 1st level nodes, and `InternalNode` for the 2nd or higher level nodes.
+Here are examples to build an HTM/Zeta1 network in HtmZetaOne. Use `LeafNode` for the 1st level nodes, and `InternalNode` for the 2nd or higher level nodes.
 
 ### Unsupervised learning (clustering)
 For unsupervised learning, you can build an HTM/Zeta1 network by simply aggregating data streams as you like. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. (They are in `HtmZetaOne.Node.ClusterStream`.) The clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
@@ -51,7 +51,7 @@ foreach(var value in level3.ClusterStream)
 
 For both cases, `InternalNode.Learn()` method calls its children's `Learn()` method recursively, so you have to write `Learn()` method only once. 
 
-Note: `LeafNode` can only take `IEnumerable<int>` as its argument. This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input. If you want to deal with more complex data (e.g. images), you must discretize your data and feed the gained indices to `LeafNode`. **For only 1-dimensional case**, `HtmZetaOne` provides `LeafNodeForContinuous` class to deal with continuous inputs. This enables fuzzy matching between memorized patterns and new inputs .
+Note: `LeafNode` can only take `IEnumerable<int>` as its argument. This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input. If you want to deal with more complex data (e.g. images), you must discretize your data and feed the gained indices to `LeafNode`. **Only in the 1-dimensional case**, `HtmZetaOne` provides `LeafNodeForContinuous` class to deal with continuous inputs. This enables fuzzy matching between memorized patterns and new inputs.
 
 
 
