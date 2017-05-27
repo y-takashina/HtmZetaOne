@@ -25,7 +25,7 @@ Just open the solution file, then build.
 Here is an example to build an HTM/Zeta1 network in HtmZetaOne. Use `LeafNode` for the 1st level nodes, and `InternalNode` for the 2nd or higher level nodes.
 
 ### Unsupervised learning (clustering)
-For unsupervised learning, you can build an HTM/Zeta1 network by simply aggregating data streams. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. (They are in `Node.ClusterStream` in `HtmZetaOne`.) The clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
+For unsupervised learning, you can build an HTM/Zeta1 network by simply aggregating data streams as you like. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. (They are in `Node.ClusterStream` in `HtmZetaOne`.) The clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
 
 ```csharp
 var streams = new List<int[]>();
