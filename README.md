@@ -45,6 +45,8 @@ foreach(var value in level3.ClusterStream)
 }
 ```
 
+A demo source code is [here](https://github.com/y-takashina/HtmZetaOne/blob/master/HtmZetaOneDemos/AnomalyDetection.cs).
+
 ### Supervised learning (classification)
 *In preparation.*
 
