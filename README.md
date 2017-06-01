@@ -18,7 +18,7 @@ An implementation of Hierarchical Temporal Memoy (HTM/Zeta1).
 - .NET Framework >= 4.6.2
 - Accord.NET >= 3.4.0
 
-Accord .NET: © César Souza, 2009-2017
+Accord .NET: © César Souza, 2009-2017 (LGPL-2.1)
 
 ## Build
 Just open the solution file, then build.
