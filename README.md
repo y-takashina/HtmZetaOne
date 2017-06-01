@@ -42,6 +42,7 @@ streams.Add(new[]{0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 0, 1, 0, 0});
 streams.Add(new[]{0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0});
 streams.Add(new[]{5, 4, 5, 4, 2, 2, 2, 2, 2, 5, 4, 5, 4, 5});
 // The 1st argument is training data, and the 2nd argument is test data.
+// The 3rd argument is the number of temporal groups in the node.
 var level1 = streams.Select(stream => new LeafNode(stream, null, 2));
 var level2Left = new InternalNode(level1.Take(2), 2);  // Take the first two streams.
 var level2Right = new InternalNode(level1.Skip(2), 2); // Take the last two streams.
