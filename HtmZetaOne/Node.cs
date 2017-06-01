@@ -149,16 +149,12 @@ namespace HtmZetaOne
 
         public override void Generate(double[] input)
         {
-            // Spatial Pooler の長さ N だけある
             var patternPlobabilities = Backward(input);
-            // i 番目の子ノードについて
             for (var i = 0; i < _childNodes.Count; i++)
             {
                 var temporalGroup = new double[_childNodes[i].M];
-                // j 番目の pattern について
                 for (var j = 0; j < N; j++)
                 {
-                    // i 番目の子ノードの k 番目の temporal group について
                     for (var k = 0; k < _childNodes[i].M; k++)
                     {
                         if (SpatialPooler[j][i] == k) temporalGroup[k] += patternPlobabilities[j];
@@ -195,9 +191,6 @@ namespace HtmZetaOne
             M = numberTemporalGroup;
         }
 
-        /// <summary>
-        /// hard forward
-        /// </summary>
         public int Forward(int input)
         {
             if (Membership == null) throw new NullReferenceException("Membership is null. Learning has not been completed properly.");
@@ -205,9 +198,6 @@ namespace HtmZetaOne
             throw new ArgumentOutOfRangeException();
         }
 
-        /// <summary>
-        /// soft forward
-        /// </summary>
         public double[] Forward(double[] input)
         {
             if (input.Length != N) throw new IndexOutOfRangeException("Feedforward input to a node must have the same length as the node's spatial pooler.");

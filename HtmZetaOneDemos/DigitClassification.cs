@@ -19,11 +19,11 @@ namespace HtmZetaOneDemos
             var digits = LoadData(pathImage, pathLabel);
             digits = digits.Where(digit => digit.Label == 4 | digit.Label == 8).ToArray();
             var trainDigits = digits.Take(50);
-            var testDigits = digits.Skip(50).Take(1000); //.Skip(10).Take(100);
+            var testDigits = digits.Skip(50).Take(1000);
 
-            // generate data
+            // generate video from MNIST images
             var screen = new Screen(28, 28);
-            var movie = new List<byte[,]>();
+            var video = new List<byte[,]>();
             foreach (var digit in trainDigits)
             {
                 for (var x = -28; x < 28; x++)
@@ -32,7 +32,7 @@ namespace HtmZetaOneDemos
                     {
                         if (x % 2 == 0) screen.Locate(digit, x, y);
                         else screen.Locate(digit, x, -y);
-                        movie.Add(screen.Pixels.DeepClone());
+                        video.Add(screen.Pixels.DeepClone());
                     }
                 }
             }
@@ -42,7 +42,7 @@ namespace HtmZetaOneDemos
                 for (var j = 0; j < 27; j++)
                 {
                     streams[i, j] = new List<int>();
-                    foreach (var frame in movie)
+                    foreach (var frame in video)
                     {
                         streams[i, j].Add(frame[i, j]);
                     }
@@ -128,31 +128,14 @@ namespace HtmZetaOneDemos
             level4.Learn();
             Console.WriteLine("Learning finished.");
 
-            Console.WriteLine((level4.M, level4.N));
             while (level4.CanPredict)
             {
                 var predicted = level4.Predict();
                 level4.Generate(predicted);
             }
-            var accuracy = 0.0;
-            for (var i = 0; i < labelNode.GeneratedStream.Count; i++)
-            {
-                if (labelNode.GeneratedStream[i] == testLabelStream[i]) accuracy++;
-            }
+            var accuracy = (double) labelNode.GeneratedStream.Zip(testLabelStream, (predicted, actual) => predicted == actual).Count(v => v);
             accuracy /= labelNode.GeneratedStream.Count;
             Console.WriteLine($"accuracy: {accuracy}");
-
-            Console.ReadLine();
-
-//            for (var i = 200; i < 300; i++)
-//            {
-//                movie[i].ToBitmap(4).Save($@"output\{i}.png", ImageFormat.Png);
-//            }
-//            for (var i = 0; i < 100; i++)
-//            {
-//                screen.Locate(i - 28, 23, digits[0]);
-//                screen.Save($@"output\{i}.png", ImageFormat.Png, 5);
-//            }
         }
     }
 }
