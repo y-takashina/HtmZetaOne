@@ -32,14 +32,13 @@ var streams = new List<int[]>();
 streams.Add(new[]{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 0});
 streams.Add(new[]{0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 0, 1, 0, 0});
 streams.Add(new[]{0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0});
-streams.Add(new[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1});
 streams.Add(new[]{5, 4, 5, 4, 2, 2, 2, 2, 2, 5, 4, 5, 4, 5});
 var level1 = streams.Select(stream => new LeafNode(stream, null, 2));
 var level2Left = new InternalNode(level1.Take(2), 2);  // Take the first two streams.
-var level2Right = new InternalNode(level1.Skip(2), 2); // Take the last three streams.
-var level3 = new InternalNode(new[] {level2Left, level2Right}, 2);
-level3.Learn(); 
-foreach(var value in level3.ClusterStream)
+var level2Right = new InternalNode(level1.Skip(2), 2); // Take the last two streams.
+var root = new InternalNode(new[] {level2Left, level2Right}, 2);
+root.Learn(); 
+foreach(var value in root.ClusterStream)
 {
     Console.Write($"{value}, "); // output: 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1
 }
@@ -49,6 +48,27 @@ A demo is [here](https://github.com/y-takashina/HtmZetaOne/blob/master/HtmZetaOn
 
 ### Supervised learning (classification)
 *In preparation.*
+
+```csharp
+var streams = new List<int[]>();
+streams.Add(new[]{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 0});
+streams.Add(new[]{0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 0, 1, 0, 0});
+streams.Add(new[]{0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0});
+streams.Add(new[]{5, 4, 5, 4, 2, 2, 2, 2, 2, 5, 4, 5, 4, 5});
+var level1 = streams.Select(stream => new LeafNode(stream, null, 2));
+var level2Left = new InternalNode(level1.Take(2), 2);  // Take the first two streams.
+var level2Right = new InternalNode(level1.Skip(2), 2); // Take the last three streams.
+var level3 = new InternalNode(new[] {level2Left, level2Right}, 2);
+
+var labelStream = new[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1};
+var labelNode = new LeafNode(labelStream, null, 2);
+var root = new InternalNode(new[] {level3, labelNode}, 2);
+root.Learn(); 
+foreach(var value in root.ClusterStream)
+{
+    Console.Write($"{value}, "); // output: 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1
+}
+```
 
 
 For both cases, `InternalNode.Learn()` method calls its children's `Learn()` method recursively, so you have to write `Learn()` method only once. 
