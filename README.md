@@ -25,7 +25,7 @@ Just open the solution file, then build.
 
 ## Correspondence to the theory
 - HTM Node
-  - In this repository, a `Node` represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` are for the 1st level nodes, and `InternalNode` is for the 2nd or higher level nodes.
+  - In this repository, `Node` class represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` classes are for the 1st level nodes, and `InternalNode` class is for the 2nd or higher level nodes.
   - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream, and the 2nd is test stream. The 3rd argument is the number of temporal groups. The 4th is a metrics, which is used to calculate distance in the temporal pooling process.
   - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd is the number of temporal groups, and the 3rd is the metrics described before.
 - Coincidence patterns
