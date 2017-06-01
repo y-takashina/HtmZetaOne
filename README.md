@@ -56,14 +56,14 @@ var streams = new List<int[]>
     new[] {0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0},
     new[] {5, 4, 5, 4, 2, 2, 2, 2, 2, 5, 4, 5, 4, 5}
 };
-// Take first ten points for training, leaving the last four points for testing.
+// Take the first ten points for training, leaving the last four points for testing.
 var level1 = streams.Select(stream => new LeafNode(stream.Take(10), stream.Skip(10), 2));
 var level2Left = new InternalNode(level1.Take(2), 2); // Take the first two streams.
 var level2Right = new InternalNode(level1.Skip(2), 2); // Take the last two streams.
 var root = new InternalNode(new[] {level2Left, level2Right}, 2);
 
 var labelStream = new[] {1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1};
-// To test the prediction accuracy for label, input {-1} stream into the second argument.
+// To test the prediction accuracy for label, input a stream filled with `-1` into the second argument.
 var labelNode = new LeafNode(labelStream.Take(10), Enumerable.Repeat(-1, 4), 2); // Use {-1} stream if want to generate 
 var superRoot = new InternalNode(new Node[] {root, labelNode}, 2);
 superRoot.Learn();
