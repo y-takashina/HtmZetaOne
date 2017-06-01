@@ -24,8 +24,8 @@ r
 ## Correspondence to the theory
 - HTM Node
   - In this repository, a `Node` represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` are for the 1st level nodes, and `InternalNode` is for the 2nd or higher level nodes.
-  - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream. The 2nd is test stream. The 3rd is a metrics, which is used to calculate distance in the temporal pooling process.
-  - The 1st argument of the constructor of `InternalNode` is child nodes, and the 2nd is a metrics described before.
+  - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream, and the 2nd is test stream. The 3rd argument is the number of temporal groups. The 4th is a metrics, which is used to calculate distance in the temporal pooling process.
+  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd is the number of temporal groups, and the 3rd is the metrics described before.
 - Coincidence patterns
   - The coincidence patterns in each node are stored in the node's `SpatialPooler`.
 - Temporal groups
@@ -41,6 +41,8 @@ streams.Add(new[]{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 0});
 streams.Add(new[]{0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 0, 1, 0, 0});
 streams.Add(new[]{0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0});
 streams.Add(new[]{5, 4, 5, 4, 2, 2, 2, 2, 2, 5, 4, 5, 4, 5});
+// The 1st argument is the training data, and the 2nd argument, which is left blank now, is the test data.
+
 var level1 = streams.Select(stream => new LeafNode(stream, null, 2));
 var level2Left = new InternalNode(level1.Take(2), 2);  // Take the first two streams.
 var level2Right = new InternalNode(level1.Skip(2), 2); // Take the last two streams.
