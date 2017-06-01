@@ -1,17 +1,5 @@
 # HtmZetaOne
 
-<!--
-Zeta1 algorithm is a nonparametric clustering algorithm for sequences. 
-Zeta1 clusters each point from a series under the following two assumptions.
-- Compositionality
-- Time invariance / Slowness
-
-Since Zeta1 treats the learned clusters as random variables, Zeta1 can also be understood as Bayesian network.
-The original paper by Dileep George is available [here](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf).
-
-Note: HTM/Zeta1 is completely different from Cortical Learning Algorithm (HTM/CLA) theoretically. Since some insist HTM/CLA is an improved version of HTM/Zeta1, HTM/CLA doesn't have hierarchy and time invariance, which play critically important role in HTM/Zeta1.
--->
-
 An implementation of Hierarchical Temporal Memoy (HTM/Zeta1).
 
 ## Requirements
@@ -26,12 +14,12 @@ Just open the solution file, then build.
 ## Correspondence to the theory
 - HTM Node
   - In this repository, `Node` class represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` classes are for the 1st level nodes, and `InternalNode` class is for the 2nd or higher level nodes.
-  - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream, and the 2nd is test stream. The 3rd argument is the number of temporal groups. The 4th is a metrics, which is used to calculate distance in the temporal pooling process.
-  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd is the number of temporal groups, and the 3rd is the metrics described before.
+  - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream, and the 2nd is test stream. The 3rd argument is the number of *temporal groups*. The 4th is a metrics, which is used to calculate distance in the temporal pooling process.
+  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd is the number of *temporal groups*, and the 3rd is the metrics described before.
 - Coincidence patterns
-  - The coincidence patterns in each node are stored in the node's `SpatialPooler`.
+  - The *coincidence patterns* in each node are stored in the node's `SpatialPooler`.
 - Temporal groups
-  - The temporal groups which each data point in the train stream belongs to are stored in the node's `ClusterStream`.
+  - The *temporal groups* which each data point in the train stream belongs to are stored in the node's `ClusterStream`.
 
 ## Examples
 ### Feedforward example (clustering)
@@ -57,7 +45,7 @@ foreach(var value in root.ClusterStream)
 ```
 
 ### Feedback example (classification)
-The network structure in this subsection is almost the same as the previous one, but a node for the label is added at the top hierarchy. Moreover, each stream is divided into two parts, a train part and a test part. After learning, you can call `Node.Predict()` to fetch the results of its children's `Predict` methods recursively. Since `LeafNode.Predict()` returns the calculated temporal group of the first element in the node's test stream, you will get the predicted cluster at the top node at last. Then, putting the predicted value into `Node.Generate()`, you can obtain the generated coincidence patterns in every node. The generated values are stored in `Node.GeneratedStream`.
+The network structure in this subsection is almost the same as the previous one, but a node for the label is added at the top hierarchy. Moreover, each stream is divided into two parts, a train part and a test part. After learning, you can call `Node.Predict()` to fetch the results of its children's `Predict` methods recursively. Since `LeafNode.Predict()` returns the calculated *temporal group* of the first element in the node's test stream, you will get the predicted cluster at the top node at last. Then, putting the predicted value into `Node.Generate()`, you can obtain the generated *coincidence patterns* in every node. The generated values are stored in `Node.GeneratedStream`.
 
 ```csharp
 var streams = new List<int[]>
