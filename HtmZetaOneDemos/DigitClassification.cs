@@ -19,7 +19,7 @@ namespace HtmZetaOneDemos
             var digits = LoadData(pathImage, pathLabel);
             digits = digits.Where(digit => digit.Label == 4 | digit.Label == 8).ToArray();
             var trainDigits = digits.Take(50);
-            var testDigits = digits.Skip(50).Take(1000);
+            var testDigits = digits.Take(50); //digits.Skip(50).Take(1000);
 
             // generate video from MNIST images
             var screen = new Screen(28, 28);
