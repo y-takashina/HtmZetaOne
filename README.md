@@ -21,10 +21,15 @@ An implementation of Hierarchical Temporal Memory (HTM/Zeta1).
 ## Build
 Just open the solution file, then build.
 
-## Examples
-Here are examples to build an HTM/Zeta1 network in HtmZetaOne.
-Use `LeafNode` for the 1st level, and `InternalNode` for the 2nd or higher level.
+## Correspondence to the theory
+- HTM Node
+  - In this repository, a `Node` represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` are for the 1st level nodes, and `InternalNode` is for the 2nd or higher level nodes.
+- Coincidence patterns
+  - The coincidence patterns are stored in `Node.SpatialPooler`.
+- Temporal groups
+  - The temporal groups are not stored in `Node` directly. You can calculate which temporal groups a coincidence pattern belongs to by calling `Node.Forward(index)`. The `index` in the argument is the index of the coincidence pattern in the node's SpatialPooer.
 
+## Examples
 ### Feedforward example (clustering)
 To test the feedforward computation in HTM/Zeta1, you can build an HTM/Zeta1 network by simply aggregating data streams as you like. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. (They are in `HtmZetaOne.Node.ClusterStream`.) The clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
 
