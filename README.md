@@ -82,8 +82,7 @@ while (superRoot.CanPredict)
     var predicted = superRoot.Predict();
     superRoot.Generate(predicted);
 }
-var accuracy = (double) labelNode.GeneratedStream.Zip(labelStream.Skip(10), (predicted, actual) => predicted == actual ? 1 : 0).Sum();
-accuracy /= labelNode.GeneratedStream.Count;
+var accuracy = labelNode.GeneratedStream.Zip(labelStream.Skip(10), (predicted, actual) => predicted == actual ? 1 : 0).Average();
 Console.WriteLine($"accuracy: {accuracy}");
 ```
 

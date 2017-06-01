@@ -132,8 +132,7 @@ namespace HtmZetaOneDemos
                 var predicted = level4.Predict();
                 level4.Generate(predicted);
             }
-            var accuracy = (double) labelNode.GeneratedStream.Zip(testLabelStream, (predicted, actual) => predicted == actual).Count(v => v);
-            accuracy /= labelNode.GeneratedStream.Count;
+            var accuracy = labelNode.GeneratedStream.Zip(testLabelStream.Skip(10), (predicted, actual) => predicted == actual ? 1 : 0).Average();
             Console.WriteLine($"accuracy: {accuracy}");
         }
     }
