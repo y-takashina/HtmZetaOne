@@ -12,7 +12,7 @@ The original paper by Dileep George is available [here](http://alpha.tmit.bme.hu
 Note: HTM/Zeta1 is completely different from Cortical Learning Algorithm (HTM/CLA) theoretically. Since some insist HTM/CLA is an improved version of HTM/Zeta1, HTM/CLA doesn't have hierarchy and time invariance, which play critically important role in HTM/Zeta1.
 -->
 
-An implementation of Hierarchical Temporal Memory (HTM/Zeta1).
+An implementation of Hierarchical Temporal Memoy (HTM/Zeta1).
 
 ## Requirements
 - .NET Framework >= 4.6.2
@@ -20,10 +20,12 @@ An implementation of Hierarchical Temporal Memory (HTM/Zeta1).
 
 ## Build
 Just open the solution file, then build.
-
+r
 ## Correspondence to the theory
 - HTM Node
   - In this repository, a `Node` represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` are for the 1st level nodes, and `InternalNode` is for the 2nd or higher level nodes.
+  - The 1st argument of the constructor of the `LeafNode` and `LeafNodeForContinuous` is train stream. The 2nd is test stream. The 3rd is a metrics, which is used to calculate distance in the temporal pooling process.
+  - The 1st argument of the constructor of the `InternalNode` is child nodes, and the 2nd is a metrics described before.
 - Coincidence patterns
   - The coincidence patterns in each node are stored in the node's `SpatialPooler`.
 - Temporal groups
