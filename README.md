@@ -46,7 +46,7 @@ foreach(var value in root.ClusterStream)
 ```
 
 ### Feedback example (classification)
-Although you can re-use the same network in the the previous subsection to try the feedback computation in HTM/Zeta1, here is an easier example to check the behaviour of the feedback computation. The network structure in this subsection is almost the same as the previous one, but a node for label is added at the top hierarchy. Moreover, each stream is divided to two parts, a train part and a test part. After learning, `Node.Predict()` fetches its childrens the results of `Predict` methods recursively, and finally get the predicted cluster at the top node. Then, putting the predicted cluster into `Node.Generate()`, you can obtain the generated states in every nodes. 
+The network structure in this subsection is almost the same as the previous one, but a node for label is added at the top hierarchy. Moreover, each stream is divided to two parts, a train part and a test part. After learning, `Node.Predict()` fetches its childrens the results of `Predict` methods recursively, and finally get the predicted cluster at the top node. Then, putting the predicted cluster into `Node.Generate()`, you can obtain the generated states in every nodes. 
 
 ```csharp
 var streams = new List<int[]>
