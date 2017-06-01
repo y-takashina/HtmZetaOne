@@ -25,9 +25,9 @@ Just open the solution file, then build.
 - HTM Node
   - In this repository, a `Node` represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` are for the 1st level nodes, and `InternalNode` is for the 2nd or higher level nodes.
 - Coincidence patterns
-  - The coincidence patterns are stored in `Node.SpatialPooler`.
+  - The coincidence patterns in each node are stored in the node's `SpatialPooler`.
 - Temporal groups
-  - The temporal groups are not stored in a `Node` directly. You can calculate which temporal groups a coincidence pattern belongs to by calling `Node.Forward(index)`. The `index` in the argument is assumed to be an index of the coincidence pattern in the node's SpatialPooer.
+  - The temporal groups which each data point in the train stream belongs to are stored in the node's `ClusterStream`.
 
 ## Examples
 ### Feedforward example (clustering)
