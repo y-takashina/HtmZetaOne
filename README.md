@@ -44,8 +44,6 @@ foreach(var value in root.ClusterStream)
 }
 ```
 
-A demo is [here](https://github.com/y-takashina/HtmZetaOne/blob/master/HtmZetaOneDemos/AnomalyDetection.cs).
-
 ### Feedback (classification)
 
 ```csharp
@@ -79,6 +77,8 @@ Console.WriteLine($"accuracy: {accuracy}");
 ```
 
 Note: `LeafNode` can only take `IEnumerable<int>` as its argument. This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input. If you want to deal with more complex data (e.g. images), you must discretize your data and feed the gained indices to `LeafNode`. **Only in the 1-dimensional case**, `HtmZetaOne` provides `LeafNodeForContinuous` class to deal with continuous inputs. This enables fuzzy matching between memorized patterns and new inputs.
+
+These demos are in `ToyProblems.cs` [here](https://github.com/y-takashina/HtmZetaOne/blob/master/HtmZetaOneDemos/).
 
 
 
