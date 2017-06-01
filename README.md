@@ -18,6 +18,8 @@ An implementation of Hierarchical Temporal Memoy (HTM/Zeta1).
 - .NET Framework >= 4.6.2
 - Accord.NET >= 3.4.0
 
+Accord .NET: © César Souza, 2009-2017
+
 ## Build
 Just open the solution file, then build.
 
@@ -89,8 +91,6 @@ Console.WriteLine($"accuracy: {accuracy}");
 Note: `LeafNode` can only take `IEnumerable<int>` as its argument. This is because HTM/Zeta1 itself is highly dependent upon the discreteness of the input. If you want to deal with more complex data (e.g. images), you must discretize your data and feed the gained indices to `LeafNode`. **Only in the 1-dimensional case**, `HtmZetaOne` provides `LeafNodeForContinuous` class to deal with continuous inputs. This enables fuzzy matching between memorized patterns and new inputs.
 
 These demos are in `ToyProblems.cs` [here](https://github.com/y-takashina/HtmZetaOne/blob/master/HtmZetaOneDemos/).
-
-
 
 
 
