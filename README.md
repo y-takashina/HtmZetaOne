@@ -55,7 +55,7 @@ foreach(var value in root.ClusterStream)
 ```
 
 ### Feedback example (classification)
-The network structure in this subsection is almost the same as the previous one, but a node for the label is added at the top hierarchy. Moreover, each stream is divided into two parts, a train part and a test part. After learning, you can call `Node.Predict()` to fetch the results of its children's `Predict` methods recursively. Since `LeafNode.Predict()` returns the calculated temporal group of the first element in the node's test stream, you will get the predicted cluster at the top node at last. Then, putting the predicted value into `Node.Generate()`, you can obtain the generated coincidence patterns in every node. 
+The network structure in this subsection is almost the same as the previous one, but a node for the label is added at the top hierarchy. Moreover, each stream is divided into two parts, a train part and a test part. After learning, you can call `Node.Predict()` to fetch the results of its children's `Predict` methods recursively. Since `LeafNode.Predict()` returns the calculated temporal group of the first element in the node's test stream, you will get the predicted cluster at the top node at last. Then, putting the predicted value into `Node.Generate()`, you can obtain the generated coincidence patterns in every node. The generated values are stored in `Node.GeneratedStream`.
 
 ```csharp
 var streams = new List<int[]>
