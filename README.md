@@ -27,7 +27,7 @@ Just open the solution file, then build.
 - Coincidence patterns
   - The coincidence patterns are stored in `Node.SpatialPooler`.
 - Temporal groups
-  - The temporal groups are not stored in a `Node` directly. You can calculate which temporal groups a coincidence pattern belongs to by calling `Node.Forward(index)`. The `index` in the argument is the index of the coincidence pattern in the node's SpatialPooer.
+  - The temporal groups are not stored in a `Node` directly. You can calculate which temporal groups a coincidence pattern belongs to by calling `Node.Forward(index)`. The `index` in the argument is assumed to be an index of the coincidence pattern in the node's SpatialPooer.
 
 ## Examples
 ### Feedforward example (clustering)
