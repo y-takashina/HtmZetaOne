@@ -30,7 +30,7 @@ namespace HtmZetaOne
             var value = _testStream.First();
             _testStream = _testStream.Skip(1);
             var coincidence = new double[N];
-            if (value == -1)
+            if (value == -1 || SpatialPooler.All(elem => !elem.SequenceEqual(new[] {value})))
             {
                 coincidence = Enumerable.Repeat(1.0 / N, N).ToArray();
             }
