@@ -20,7 +20,7 @@ An implementation of Hierarchical Temporal Memoy (HTM/Zeta1).
 
 ## Build
 Just open the solution file, then build.
-r
+
 ## Correspondence to the theory
 - HTM Node
   - In this repository, a `Node` represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` are for the 1st level nodes, and `InternalNode` is for the 2nd or higher level nodes.
