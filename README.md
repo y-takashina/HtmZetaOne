@@ -64,7 +64,7 @@ var root = new InternalNode(new[] {level2Left, level2Right}, 2);
 
 var labelStream = new[] {1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1};
 // To test the prediction accuracy for label, input a stream filled with `-1` into the second argument.
-var labelNode = new LeafNode(labelStream.Take(10), Enumerable.Repeat(-1, 4), 2); // Use {-1} stream if want to generate 
+var labelNode = new LeafNode(labelStream.Take(10), Enumerable.Repeat(-1, 4), 2);
 var superRoot = new InternalNode(new Node[] {root, labelNode}, 2);
 superRoot.Learn();
 
