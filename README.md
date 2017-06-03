@@ -14,16 +14,16 @@ Just open the solution file, then build.
 ## Correspondence to the theory
 - HTM Node
   - In this repository, `Node` class represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` classes are for the 1st level nodes, and `InternalNode` class is for the 2nd or higher level nodes.
-  - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream, and the 2nd is test stream. The 3rd argument is the number of *temporal groups*. The 4th is a metrics, which is used to calculate distance in the temporal pooling process.
-  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd is the number of *temporal groups*, and the 3rd is the metrics described before.
+  - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is train stream, and the 2nd argument is test stream. The 3rd argument is the number of *temporal groups*. The 4th argument is a metrics, which is used to calculate distance in the temporal pooling process.
+  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd argument is the number of *temporal groups*, and the 3rd argument is the above metrics.
 - Coincidence patterns
   - The *coincidence patterns* in each node are stored in the node's `SpatialPooler`.
 - Temporal groups
-  - The *temporal groups* which each data point in the train stream belongs to are stored in the node's `ClusterStream`.
+  - The *temporal groups* to which each data point in the train stream belongs are stored in the node's `ClusterStream`.
 
 ## Examples
 ### Feedforward example (clustering)
-To test the feedforward computation in HTM/Zeta1, you can build an HTM/Zeta1 network by simply aggregating data streams as you like. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. (They are in `HtmZetaOne.Node.ClusterStream`.) The clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
+To test the feedforward computation in HtmZetaOne, you can build an HtmZetaOne network by simply aggregating data streams as you like. After learning, you will obtain the assignments for each data point to the clusters for each level of hierarchy. (They are in `HtmZetaOne.Node.ClusterStream`.) The clusters are also called *temporal groups* in [the original paper](http://alpha.tmit.bme.hu/speech/docs/education/02_DileepThesis.pdf) by Dileep George.
 
 ```csharp
 var streams = new List<int[]>();
