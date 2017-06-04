@@ -15,7 +15,7 @@ Just open the solution file, then build.
 - HTM Node
   - In this repository, `Node` class represents an HTM Node. `LeafNode` and `LeafNodeForContinuous` classes are for the 1st level nodes, and `InternalNode` class is for the 2nd or higher level nodes.
   - The 1st argument of the constructor of `LeafNode` and `LeafNodeForContinuous` is a train stream, and the 2nd argument is a test stream. The 3rd argument is the number of *temporal groups*. The 4th argument is a metrics, which is used to calculate distance in the temporal pooling process.
-  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd argument is the number of *temporal groups*, and the 3rd argument is the above metrics.
+  - The 1st argument of the constructor of `InternalNode` is child nodes, the 2nd argument is the number of *temporal groups*, and the 3rd argument is the above metrics.
 - Coincidence patterns
   - The *coincidence patterns* in each node are stored in the node's `SpatialPooler`.
 - Temporal groups
